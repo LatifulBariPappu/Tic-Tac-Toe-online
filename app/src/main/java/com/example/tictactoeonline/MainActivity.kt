@@ -15,16 +15,13 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.playOfflineBtn.setOnClickListener(View.OnClickListener {
             createOfflineGame()
         })
     }
-
     fun createOfflineGame(){
         startGame()
     }
-
     fun startGame(){
         startActivity(Intent(this,GameActivity::class.java))
     }
