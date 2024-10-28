@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Tic Tac Toe online</string>
+    <string name="play_offline">Play Offline</string>
 </resources>
