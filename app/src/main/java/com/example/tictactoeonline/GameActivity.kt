@@ -3,6 +3,7 @@ package com.example.tictactoeonline
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tictactoeonline.databinding.ActivityGameBinding
 
@@ -72,10 +73,36 @@ class GameActivity : AppCompatActivity(),OnClickListener{
 
     }
     fun startGame() {
+        gameModel?.apply {
+            updateGameData(
+                GameModel(
+                    gameId = gameId,
+                    gameStatus = GameStatus.INPROGRESS
+
+                )
+            )
+        }
 
     }
 
+    fun updateGameData(model: GameModel){
+        GameData.saveGameModel(model)
+    }
+
     override fun onClick(v: View?) {
+        gameModel?.apply {
+            if(gameStatus!=GameStatus.INPROGRESS){
+                Toast.makeText(applicationContext,"Game not started",Toast.LENGTH_SHORT).show()
+                return
+            }
+            //game is in progress
+            val clickedPos= (v?.tag as String).toInt()
+            if(filledPos[clickedPos].isEmpty()){
+                filledPos[clickedPos] = currentPlayer
+                currentPlayer = if(currentPlayer=="X") "O" else "X"
+                updateGameData(this)
+            }
+        }
 
     }
 }
