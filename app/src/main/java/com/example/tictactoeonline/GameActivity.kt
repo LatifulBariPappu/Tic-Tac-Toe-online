@@ -18,7 +18,6 @@ class GameActivity : AppCompatActivity(),OnClickListener{
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.btn0.setOnClickListener(this)
         binding.btn1.setOnClickListener(this)
         binding.btn2.setOnClickListener(this)
@@ -53,15 +52,20 @@ class GameActivity : AppCompatActivity(),OnClickListener{
             binding.btn7.text=filledPos[7]
             binding.btn8.text=filledPos[8]
 
+
+            binding.startGameBtn.visibility = View.VISIBLE
+
             binding.gameStatusText.text=
                 when(gameStatus){
                     GameStatus.CREATED->{
+                        binding.startGameBtn.visibility = View.INVISIBLE
                         "Game ID :"+gameId
                     }
                     GameStatus.JOINED->{
                         "Click on start game"
                     }
                     GameStatus.INPROGRESS->{
+                        binding.startGameBtn.visibility = View.INVISIBLE
                         currentPlayer+"turn"
                     }
                     GameStatus.FINISHED->{
@@ -89,6 +93,32 @@ class GameActivity : AppCompatActivity(),OnClickListener{
         GameData.saveGameModel(model)
     }
 
+    fun checkForWinner(){
+        val winningPos= arrayOf(
+            intArrayOf(0,1,2),
+            intArrayOf(3,4,5),
+            intArrayOf(6,7,8),
+            intArrayOf(0,3,6),
+            intArrayOf(1,4,7),
+            intArrayOf(2,5,8),
+            intArrayOf(8,4,8),
+            intArrayOf(2,4,6),
+        )
+        gameModel?.apply {
+            for(i in winningPos){
+                if(
+                    filledPos[i[0]] == filledPos[i[1]] &&
+                    filledPos[i[1]] == filledPos[i[2]] &&
+                    filledPos[i[0]].isNotEmpty()
+                ){
+                    gameStatus = GameStatus.FINISHED
+                    winner = filledPos[i[0]]
+                }
+            }
+            updateGameData(this)
+        }
+    }
+
     override fun onClick(v: View?) {
         gameModel?.apply {
             if(gameStatus!=GameStatus.INPROGRESS){
@@ -100,6 +130,7 @@ class GameActivity : AppCompatActivity(),OnClickListener{
             if(filledPos[clickedPos].isEmpty()){
                 filledPos[clickedPos] = currentPlayer
                 currentPlayer = if(currentPlayer=="X") "O" else "X"
+                checkForWinner()
                 updateGameData(this)
             }
         }
