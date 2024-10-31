@@ -115,6 +115,11 @@ class GameActivity : AppCompatActivity(),OnClickListener{
                     winner = filledPos[i[0]]
                 }
             }
+
+            if(filledPos.none(){it.isEmpty()}){
+                gameStatus = GameStatus.FINISHED
+            }
+
             updateGameData(this)
         }
     }
