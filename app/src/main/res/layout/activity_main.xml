@@ -33,7 +33,7 @@
     <Button
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:id="@+id/play_online_game_btn"
+        android:id="@+id/create_online_game_btn"
         android:text="@string/create_game_online"
         android:padding="8dp"/>
     <TextView
